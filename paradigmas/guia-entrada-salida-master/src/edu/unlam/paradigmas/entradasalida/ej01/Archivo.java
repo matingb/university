@@ -22,7 +22,7 @@ public class Archivo {
 		Scanner scanner = null;
 		
 		try {
-			File file = new File("./casos/in/" + nombre + ".in");
+			File file = new File("./casos/ejercicio1/in/" + nombre + ".in");
 			scanner = new Scanner(file);
 			scanner.useLocale(Locale.ENGLISH);
 			
@@ -51,7 +51,7 @@ public class Archivo {
 		PrintWriter printerWriter = null;
 		
 		try {
-			file = new FileWriter("./casos/out/" + nombre + ".out");
+			file = new FileWriter("./casos/ejercicio1/out/" + nombre + ".out");
 			printerWriter = new PrintWriter(file);
 			
 			for(Integer dato : datos) {
