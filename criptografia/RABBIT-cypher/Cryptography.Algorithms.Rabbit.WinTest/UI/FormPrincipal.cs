@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Cryptography.Algorithms.Rabbit.WinTest.UI
 {
@@ -94,12 +95,6 @@ namespace Cryptography.Algorithms.Rabbit.WinTest.UI
             return ProcesoPrincipal.Instancia.Cipher(txtKeyInicial.Text, txtIVInicial.Text, (byte[]) pbImagenInicial.Tag);
         }
 
-        private void BtnCopiarConfig_Click(object sender, EventArgs e)
-        {
-            txtKeyFinal.Text = txtKeyInicial.Text;
-            txtIVFinal.Text = txtIVInicial.Text;
-        }
-
         private void BtnImagen_Click(object sender, EventArgs e)
         {
             using (var dialog = new OpenFileDialog())
@@ -157,39 +152,28 @@ namespace Cryptography.Algorithms.Rabbit.WinTest.UI
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
+        {
+            if (pbImagenRabbit.Image != null)
             {
-                if (pbImagenRabbit.Image != null)
+                using (SaveFileDialog saveDialog = new SaveFileDialog())
                 {
-                    using (SaveFileDialog saveDialog = new SaveFileDialog())
+                    saveDialog.Filter = "Text files (*.txt)|*.txt";
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
                     {
-                        saveDialog.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg|Todos los archivos|*.*";
-                        if (saveDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            string filePath = saveDialog.FileName;
+                        string texto = txtBytesRabbit.Text;
 
-                            // Obtener el formato de imagen actual
-                            ImageFormat formato = pbImagenInicial.Image.RawFormat;
+                        //Guardar archivo txt
+                        string filePath = saveDialog.FileName;
+                        File.WriteAllText(filePath, texto);
 
-                            // Obtener el códec de imagen correspondiente al formato actual
-                            ImageCodecInfo codecInfo = ImageCodecInfo.GetImageDecoders()
-                                .FirstOrDefault(codec => codec.FormatID == formato.Guid);
-
-                            // Configurar los parámetros de codificación para mantener el formato original
-                            EncoderParameters encoderParams = new EncoderParameters(1);
-                            encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L); // Puedes ajustar el nivel de calidad si es necesario
-
-                            // Guardar la imagen en el formato original
-                            pbImagenRabbit.Image.Save(filePath, codecInfo, encoderParams);
-
-                            MessageBox.Show("Imagen guardada exitosamente.");
-                        }
+                        MessageBox.Show("Bytes guardados exitosamente.");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("No hay una imagen para guardar.");
-                }
             }
-
+            else
+            {
+                MessageBox.Show("No hay bytes para guardar.");
+            }
         }
+    }
 }

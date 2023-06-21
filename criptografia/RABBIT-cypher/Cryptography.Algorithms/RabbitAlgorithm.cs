@@ -62,7 +62,6 @@ namespace Cryptography.Algorithms
 
         private void KeySetup(byte[] key)
         {
-            // TODO validar que la key tenga 16 elementos
             UInt32 k0 = BitConverter.ToUInt32(key, 0);
             UInt32 k1 = BitConverter.ToUInt32(key, 4);
             UInt32 k2 = BitConverter.ToUInt32(key, 8);
